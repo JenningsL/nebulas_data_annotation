@@ -1,0 +1,11 @@
+{
+  "presets": ["env", "react"],
+  "plugins": [
+      ["import", {"libraryName": "antd", "style": true}],
+      "react-hot-loader/babel",
+      "syntax-async-functions",
+      "transform-regenerator",
+      "transform-object-rest-spread",
+      "transform-class-properties"
+  ]
+}

@@ -1,0 +1,56 @@
+.task-list {
+  .list-item {
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+
+    .task-id {
+      flex-basis: 50px;
+      font-size: 25px;
+      flex-shrink: 0;
+      // color: #40a9ff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    p {
+      margin-bottom: 5px;
+    }
+
+    .main {
+      flex-grow: 1;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+      overflow:hidden;
+
+      p {
+        max-width: 100%;
+        overflow:hidden;
+      }
+    }
+
+    .reward {
+      flex-basis: 150px;
+      text-align: center;
+      flex-shrink: 0;
+
+      .anticon {
+        font-size: 20px;
+        color: #faad14;
+      }
+    }
+
+    .actions {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .ant-divider-vertical {
+      height: 90%;
+    }
+  }
+}
