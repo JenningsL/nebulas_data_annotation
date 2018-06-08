@@ -64,12 +64,16 @@ MarkTask.prototype = {
         return task;
     },
 
-    getTasks: function() {
+    getTasks: function(publisher) {
       var result = [];
       for (var i = 0; i < this.size; i++) {
         var task = this.tasks.get(i);
+        if (publisher && task.publisher !== publisher) {
+          continue;
+        }
         var correctAnswers = this._getCorrectAnswers(i + "");
         task.answerNum = correctAnswers.length;
+        task.correctAnswers = correctAnswers;
         result.push(task);
       }
       return result;
@@ -123,6 +127,13 @@ MarkTask.prototype = {
     },
 
     answer: function(taskId, answer) {
+      var author = Blockchain.transaction.from;
+      var userTasksIds = this.getAnswers(null, author).map(function(ans) {
+        return ans.taskId;
+      });
+      if (userTasksIds.includes(taskId)) {
+        throw new Error("Already answered this task.");
+      }
       var task = this.tasks.get(taskId);
       if (!task) {
         throw new Error("Task not exist.");
@@ -130,7 +141,6 @@ MarkTask.prototype = {
       if (this._getCorrectAnswers(taskId).length) {
         throw new Error("Task already completed.");
       }
-      var author = Blockchain.transaction.from;
       var key = this.answerSize++;
 
       var answerItem = new AnswerItem({
@@ -154,11 +164,14 @@ MarkTask.prototype = {
       }
     },
 
-    getUserAnswer: function(author) {
+    getAnswers: function(taskId, author) {
       let answers = [];
       for (var i = 0; i < this.answerSize; i++) {
         var ans = this.answers.get(i);
-        if (ans.author !== author) {
+        if (taskId && ans.taskId !== taskId) {
+          continue;
+        }
+        if (author && ans.author !== author) {
           continue;
         }
         var correctIds = this._getCorrectAnswers(ans.taskId).map(function(ans) {
@@ -169,8 +182,10 @@ MarkTask.prototype = {
         } else {
           ans.validated = false;
         }
+        ans.task = this.tasks.get(ans.taskId);
         answers.push(ans);
       }
+      return answers;
     }
 };
 

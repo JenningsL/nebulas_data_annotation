@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Form, Icon, Input, Button, Checkbox, Layout, InputNumber, Select } from 'antd'
+import { Form, Icon, Input, Button, Checkbox, Layout, InputNumber, Select, message } from 'antd'
 import {Link} from 'react-router-dom'
 const FormItem = Form.Item
 const Option = Select.Option
@@ -37,6 +37,8 @@ class Answer extends Component {
         if (!err) {
           console.log('Received values of form: ', values)
           this.submitAnswer(this.props.match.params.id, values.answer)
+          message.success('已提交，请确认交易并等待验证')
+          setTimeout(() => this.props.history.push('/'), 1000)
         }
       })
   }
@@ -46,7 +48,7 @@ class Answer extends Component {
     const type = this.props.data.type
     if (type === 'choice') {
       return (
-        <FormItem>
+        <FormItem label='答案'>
           {getFieldDecorator('answer', {
             rules: [{ required: true, message: '不能为空' }],
           })(
@@ -58,7 +60,7 @@ class Answer extends Component {
       )
     } else if (type === 'open') {
       return (
-        <FormItem>
+        <FormItem label='答案'>
           {getFieldDecorator('answer', {
             rules: [{ required: true, message: '不能为空' }],
           })(
@@ -75,11 +77,15 @@ class Answer extends Component {
     const task = this.props.data
     return (
       <Content className='content'>
-        <div className='page'>
+        <div className='page answer-page'>
           <Form onSubmit={this.handleSubmit} className="publish-form">
             <h3>{task.title}</h3>
-            <p>{task.description}</p>
-            <p><Icon type="pay-circle" />{task.reward} 代币</p>
+            <p>任务说明：{task.description}</p>
+            <p className='task-data'>{task.data}</p>
+            <p>奖励<Icon type="pay-circle" />
+              <span className='important-number'>{task.reward / Math.pow(10, 18)}</span> NAS，
+              <span className='important-number'>{task.validateNum}</span>人平分
+            </p>
             {this.renderAnswerBox()}
             <FormItem>
               <Button type="primary" htmlType="submit" className="publish-form-button">

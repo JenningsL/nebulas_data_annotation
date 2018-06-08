@@ -6,6 +6,7 @@ const FormItem = Form.Item
 const Option = Select.Option
 const { Header, Content, Footer } = Layout
 import {dappAddress} from '../../neb'
+const {TextArea} = Input
 
 import './index.less'
 
@@ -90,7 +91,7 @@ class Publish extends Component {
               {getFieldDecorator('data', {
                 rules: [{ required: true, message: '不能为空' }]
               })(
-                <Input/>
+                <TextArea rows={4}/>
               )}
             </FormItem>
             {

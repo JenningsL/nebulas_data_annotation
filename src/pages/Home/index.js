@@ -30,6 +30,7 @@ class Home extends Component {
     let from = account.getAddressString()
     var value = "0";
     var nonce = "0"
+    // var gas_price = "1000000"
     var gas_price = "1000000"
     var gas_limit = "2000000"
     var callFunction = "getTasks";
@@ -66,7 +67,7 @@ class Home extends Component {
                 <div className='main'>
                   <h4>任务标题：{item.title}</h4>
                   <p>任务描述：{item.description}</p>
-                  <p>标注数据：{item.description}</p>
+                  <p>标注数据：{item.data}</p>
                 </div>
                 <div className='reward'>
                   <p><Icon type="pay-circle" /></p>
